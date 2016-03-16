@@ -22,7 +22,8 @@ extension DateTests {
     static var allTests : [(String, DateTests -> () throws -> Void)] {
         return [
                    ("testDate", testDate),
-                   ("testDateFormatter", testDateFormatter)
+                   ("testJSTDateFormatter", testJSTDateFormatter),
+                   ("testUTCDateFormatter", testUTCDateFormatter)
         ]
     }
 }
@@ -64,16 +65,14 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         }
     }
     
-    func testDateFormatter() {
+    func testJSTDateFormatter() {
         
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US")
-        let tz = CFTimeZoneCreateWithTimeIntervalFromGMT(nil, 60*60*9)
-        #if os(OSX)
-        formatter.timeZone = tz as NSTimeZone
-        #else
-        formatter.timeZone = unsafeBitCast(tz, NSTimeZone.self)
-        #endif
+        guard let locale = Locale(identifier: "en_US_POSIX"), let tz = NSTimeZone(name: "JST") else {
+            fatalError()
+        }
+        
+        let formatter = DateFormatter(locale: locale)
+        formatter.timeZone = tz
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         do {
@@ -97,6 +96,31 @@ class DateTests: XCTestCase, XCTestCaseProvider {
             let date = Date(since1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
             let str = formatter.stringFromDate(date)
             XCTAssertEqual(str, "2016-03-16 17:33:12")
+        }
+        
+    }
+    
+    func testUTCDateFormatter() {
+        
+        guard let locale = Locale(identifier: "en_US_POSIX"), let tz = NSTimeZone(name: "UTC") else {
+            fatalError()
+        }
+        
+        let formatter = DateFormatter(locale: locale)
+        formatter.timeZone = tz
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        do {
+            let dateStr = "2002-03-03 20:06:07"
+            let date: Date = formatter.dateFromString(dateStr)!
+            XCTAssertEqual(date.timeintervalSince1970, Double(1015185967))
+            XCTAssertEqual(dateStr, formatter.stringFromDate(date))
+        }
+        
+        do {
+            let date = Date(since1970: 1458117192) // Wed Mar 16 2016 08:33:12 Z
+            let str = formatter.stringFromDate(date)
+            XCTAssertEqual(str, "2016-03-16 08:33:12")
         }
     }
     
