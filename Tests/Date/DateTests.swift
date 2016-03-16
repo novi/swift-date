@@ -23,7 +23,8 @@ extension DateTests {
         return [
                    ("testDate", testDate),
                    ("testJSTDateFormatter", testJSTDateFormatter),
-                   ("testUTCDateFormatter", testUTCDateFormatter)
+                   ("testUTCDateFormatter", testUTCDateFormatter),
+                   ("testNSDateFormatter", testNSDateFormatter)
         ]
     }
 }
@@ -125,5 +126,26 @@ class DateTests: XCTestCase, XCTestCaseProvider {
     }
     
     
+    func testNSDateFormatter() {
+        let formatter = NSDateFormatter()
+        formatter.locale = NSLocale(localeIdentifier: "en_US")
+        formatter.timeZone = NSTimeZone(name: "JST")
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        XCTAssertNotNil(formatter.timeZone)
+        XCTAssertNotNil(formatter.locale)
+        
+        let dateString = "2001-02-03 04:05:06"
+        let date = formatter.dateFromString(dateString)!
+        print(date)
+        XCTAssertEqual(formatter.stringFromDate(date), dateString)
+        
+        /*do {
+            // will fail for now
+            let date = NSDate(timeIntervalSince1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
+            let str = formatter.stringFromDate(date)
+            XCTAssertEqual(str, "2016-03-16 17:33:12")
+        }*/
+    }
     
 }

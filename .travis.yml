@@ -12,5 +12,5 @@ install:
 script:
   - swift build
   - swift test
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild -project Xcode/Date/Date.xcodeproj -scheme Date build test ; fi
+  #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then xcodebuild -project Xcode/Date/Date.xcodeproj -scheme Date build test ; fi
   
