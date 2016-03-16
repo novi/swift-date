@@ -42,7 +42,7 @@ class DateTests: XCTestCase, XCTestCaseProvider {
             let now2 = Date(nsdate)
             
             XCTAssertEqual(now1, now2)
-            XCTAssertEqual(nsdate.timeIntervalSince1970, now2.timeintervalSince1970)
+            XCTAssertEqual(nsdate.timeIntervalSince1970, now2.timeIntervalSince1970)
             
             XCTAssertEqual(now1.hashValue, now2.hashValue)
             
@@ -62,9 +62,32 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         
         do {
             let date = Date(since1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
-            XCTAssertEqual(date.timeintervalSince1970, 1458117192)
+            XCTAssertEqual(date.timeIntervalSince1970, 1458117192)
         }
     }
+    
+    func testComparing() {
+        
+        let now1 = Date(absoluteTime: 0)
+        let now2 = Date(absoluteTime: 0)
+        XCTAssertTrue(now1 == now2)
+        XCTAssertTrue(now1 >= now2)
+        XCTAssertTrue(now1 <= now2)
+        
+    }
+    
+    func testOperation() {
+        let now = Date()
+        let sinceNow = now + 60
+        XCTAssertEqual(now.timeIntervalSince1970 + 60, sinceNow.timeIntervalSince1970)
+        
+        XCTAssertEqual((now - 54).timeIntervalSince1970, now.timeIntervalSince1970 - 54)
+        
+        XCTAssertEqual(now - sinceNow, -60)
+        
+    }
+    
+    
     
     func testJSTDateFormatter() {
         
@@ -89,7 +112,7 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         do {
             let dateStr = "2002-03-04 05:06:07"
             let date: Date = formatter.dateFromString(dateStr)!
-            XCTAssertEqual(date.timeintervalSince1970, Double(1015185967))
+            XCTAssertEqual(date.timeIntervalSince1970, Double(1015185967))
             XCTAssertEqual(dateStr, formatter.stringFromDate(date))
         }
         
@@ -114,7 +137,7 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         do {
             let dateStr = "2002-03-03 20:06:07"
             let date: Date = formatter.dateFromString(dateStr)!
-            XCTAssertEqual(date.timeintervalSince1970, Double(1015185967))
+            XCTAssertEqual(date.timeIntervalSince1970, Double(1015185967))
             XCTAssertEqual(dateStr, formatter.stringFromDate(date))
         }
         

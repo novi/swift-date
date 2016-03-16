@@ -11,15 +11,14 @@ import CoreFoundation
 
 public struct Date: Equatable, Hashable, Comparable {
     
-    public let timeintervalSince1970: NSTimeInterval // unix time
+    public let timeIntervalSince1970: NSTimeInterval // unix time
     
     public init(since1970: NSTimeInterval) {
-        self.timeintervalSince1970 = since1970
+        self.timeIntervalSince1970 = since1970
     }
     public init(sinceReference: NSTimeInterval) {
-        self.timeintervalSince1970 = sinceReference + kCFAbsoluteTimeIntervalSince1970
+        self.timeIntervalSince1970 = sinceReference + kCFAbsoluteTimeIntervalSince1970
     }
-    //static let CFAbsoluteTimeIntervalSince1970: Double = 978307200;
 }
 
 extension Date: CustomStringConvertible {
@@ -45,35 +44,43 @@ extension Date {
 
 extension Date {
     public var hashValue: Int {
-        return timeintervalSince1970.hashValue
+        return timeIntervalSince1970.hashValue
     }
 }
 
 public func ==(lhs: Date, rhs: Date) -> Bool {
-    return lhs.timeintervalSince1970 == rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 == rhs.timeIntervalSince1970
 }
 
 public func <(lhs: Date, rhs: Date) -> Bool {
-    return lhs.timeintervalSince1970 < rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 < rhs.timeIntervalSince1970
 }
 
 public func <=(lhs: Date, rhs: Date) -> Bool {
-    return lhs.timeintervalSince1970 <= rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 <= rhs.timeIntervalSince1970
 }
 
 public func >=(lhs: Date, rhs: Date) -> Bool {
-    return lhs.timeintervalSince1970 >= rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 >= rhs.timeIntervalSince1970
 }
 
 public func >(lhs: Date, rhs: Date) -> Bool {
-    return lhs.timeintervalSince1970 > rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 > rhs.timeIntervalSince1970
 }
 
 public func -(lhs: Date, rhs: Date) -> NSTimeInterval {
-    return lhs.timeintervalSince1970 - rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 - rhs.timeIntervalSince1970
 }
 
 public func +(lhs: Date, rhs: Date) -> NSTimeInterval {
-    return lhs.timeintervalSince1970 + rhs.timeintervalSince1970
+    return lhs.timeIntervalSince1970 + rhs.timeIntervalSince1970
+}
+
+public func +(lhs: Date, rhs: NSTimeInterval) -> Date {
+    return Date(since1970: lhs.timeIntervalSince1970 + rhs)
+}
+
+public func -(lhs: Date, rhs: NSTimeInterval) -> Date {
+    return Date(since1970: lhs.timeIntervalSince1970 - rhs)
 }
 

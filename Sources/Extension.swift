@@ -11,13 +11,13 @@ import CoreFoundation
 
 public extension Date {
     var nsDate: NSDate {
-        return NSDate(timeIntervalSince1970: timeintervalSince1970)
+        return NSDate(timeIntervalSince1970: timeIntervalSince1970)
     }
     var cfDate: CFDate {
         return CFDateCreate(nil, self.absoluteTime)
     }
     var absoluteTime: CFAbsoluteTime {
-        return timeintervalSince1970 - kCFAbsoluteTimeIntervalSince1970
+        return timeIntervalSince1970 - kCFAbsoluteTimeIntervalSince1970
     }
 }
 
