@@ -43,14 +43,14 @@ public final class DateFormatter {
         formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
         #endif
     }
-    var dateFormat: String? {
+    public var dateFormat: String? {
         didSet {
             if let val = dateFormat {
                 CFDateFormatterSetFormat(formatter, CFString.from(val))
             }
         }
     }
-    var timeZone: NSTimeZone = NSTimeZone.systemTimeZone() {
+    public var timeZone: NSTimeZone = NSTimeZone.systemTimeZone() {
         didSet {
             CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, timeZone)
         }
