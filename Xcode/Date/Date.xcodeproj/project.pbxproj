@@ -33,6 +33,7 @@
 		52EB7C911C99469F009B4F55 /* DateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
 		52EB7C931C9946A5009B4F55 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		52EB7C951C9946B1009B4F55 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		52EB7CB31C9950E5009B4F55 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = ../../../Tests/LinuxMain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +86,7 @@
 		52EB7C7E1C994655009B4F55 /* DateTests */ = {
 			isa = PBXGroup;
 			children = (
+				52EB7CB31C9950E5009B4F55 /* LinuxMain.swift */,
 				52EB7C901C99469F009B4F55 /* Date */,
 				52EB7C811C994655009B4F55 /* Info.plist */,
 			);
@@ -410,6 +412,7 @@
 				52EB7C861C994655009B4F55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		52EB7C871C994655009B4F55 /* Build configuration list for PBXNativeTarget "DateTests" */ = {
 			isa = XCConfigurationList;
@@ -418,6 +421,7 @@
 				52EB7C891C994655009B4F55 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

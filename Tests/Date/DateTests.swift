@@ -8,8 +8,30 @@
 
 import XCTest
 @testable import Date
+import Foundation
+import CoreFoundation
 
-class DateTests: XCTestCase {
+#if os(OSX)
+    protocol XCTestCaseProvider {
+        var allTests: [(String, () throws -> Void)] { get }
+    }
+    
+#endif
+
+extension DateTests {
+    static var allTests : [(String, DateTests -> () throws -> Void)] {
+        return [
+                   ("testDate", testDate),
+                   ("testDateFormatter", testDateFormatter)
+        ]
+    }
+}
+
+class DateTests: XCTestCase, XCTestCaseProvider {
+    
+    var allTests: [(String, () throws -> Void)] {
+        return self.dynamicType.allTests.map{ ($0.0, $0.1(self)) }
+    }
     
     func testDate() {
         do {
@@ -35,13 +57,23 @@ class DateTests: XCTestCase {
             let abs2 = CFDateCreate(nil, 0)
             XCTAssertEqual(Date(abs2), abs1)
         }
+        
+        do {
+            let date = Date(since1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
+            XCTAssertEqual(date.timeintervalSince1970, 1458117192)
+        }
     }
     
     func testDateFormatter() {
         
         let formatter = NSDateFormatter()
         formatter.locale = NSLocale(localeIdentifier: "en_US")
-        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 60*60*9)
+        let tz = CFTimeZoneCreateWithTimeIntervalFromGMT(nil, 60*60*9)
+        #if os(OSX)
+        formatter.timeZone = tz as NSTimeZone
+        #else
+        formatter.timeZone = unsafeBitCast(tz, NSTimeZone.self)
+        #endif
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         do {
@@ -59,6 +91,12 @@ class DateTests: XCTestCase {
             let date: Date = formatter.dateFromString(dateStr)!
             XCTAssertEqual(date.timeintervalSince1970, Double(1015185967))
             XCTAssertEqual(dateStr, formatter.stringFromDate(date))
+        }
+        
+        do {
+            let date = Date(since1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
+            let str = formatter.stringFromDate(date)
+            XCTAssertEqual(str, "2016-03-16 17:33:12")
         }
     }
     
