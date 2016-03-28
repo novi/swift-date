@@ -11,13 +11,6 @@ import XCTest
 import Foundation
 import CoreFoundation
 
-#if os(OSX)
-    protocol XCTestCaseProvider {
-        var allTests: [(String, () throws -> Void)] { get }
-    }
-    
-#endif
-
 extension DateTests {
     static var allTests : [(String, DateTests -> () throws -> Void)] {
         return [
@@ -29,11 +22,7 @@ extension DateTests {
     }
 }
 
-class DateTests: XCTestCase, XCTestCaseProvider {
-    
-    var allTests: [(String, () throws -> Void)] {
-        return self.dynamicType.allTests.map{ ($0.0, $0.1(self)) }
-    }
+class DateTests: XCTestCase {
     
     func testDate() {
         do {
@@ -159,9 +148,9 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         XCTAssertNotNil(formatter.locale)
         
         let dateString = "2001-02-03 04:05:06"
-        let date = formatter.dateFromString(dateString)!
+        let date = formatter.date(from: dateString)!
         print(date)
-        XCTAssertEqual(formatter.stringFromDate(date), dateString)
+        XCTAssertEqual(formatter.string(from: date), dateString)
         
         /*do {
             // will fail for now
@@ -172,3 +161,15 @@ class DateTests: XCTestCase, XCTestCaseProvider {
     }
     
 }
+
+#if os(OSX)
+#else
+extension NSDateFormatter {
+    func date(from string: String) -> NSDate? {
+        return self.dateFromString(string)
+    }
+    func string(from date: NSDate) -> String {
+        return self.stringFromDate(date)
+    }
+}
+#endif

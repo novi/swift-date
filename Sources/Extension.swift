@@ -46,7 +46,7 @@ extension CFString {
         return self as String
         #else
         let ptr = CFStringGetCStringPtr(self, UInt32(kCFStringEncodingUTF8))
-            guard let str = String.fromCString(ptr) else {
+            guard let str = String(validatingUTF8: ptr) else {
                 fatalError("CFString to String conversion failed, \(self)")
             }
             return str

@@ -25,23 +25,24 @@ public final class Locale {
     // https://github.com/apple/swift-corelibs-foundation/blob/master/CoreFoundation/Locale.subproj/CFDateFormatter.h#L36
     public enum CFDateFormatterStyle : Int {
         
-        case NoStyle = 0
-        case ShortStyle = 1
-        case MediumStyle = 2
-        case LongStyle = 3
-        case FullStyle = 4
+        case noStyle = 0
+        case shortStyle = 1
+        case mediumStyle = 2
+        case longStyle = 3
+        case fullStyle = 4
     }
 #endif
 
 
 public final class DateFormatter {
     public let formatter: CFDateFormatter
-    public init(locale: Locale, dateStyle: CFDateFormatterStyle = .NoStyle, timeStyle: CFDateFormatterStyle = .NoStyle) {
+    public init(locale: Locale, dateStyle: CFDateFormatterStyle = .noStyle, timeStyle: CFDateFormatterStyle = .noStyle) {
         #if os(OSX)
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle, timeStyle)
         #else
         formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
         #endif
+        timeZone = NSTimeZone.defaultTimeZone()
     }
     public var dateFormat: String? {
         didSet {
@@ -50,7 +51,7 @@ public final class DateFormatter {
             }
         }
     }
-    public var timeZone: NSTimeZone = NSTimeZone.systemTimeZone() {
+    public var timeZone: NSTimeZone {
         didSet {
             CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, timeZone)
         }
