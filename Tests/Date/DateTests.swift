@@ -15,6 +15,8 @@ extension DateTests {
     static var allTests : [(String, DateTests -> () throws -> Void)] {
         return [
                    ("testDate", testDate),
+                   ("testComparing", testComparing),
+                   ("testOperation", testOperation),
                    ("testJSTDateFormatter", testJSTDateFormatter),
                    ("testUTCDateFormatter", testUTCDateFormatter),
                    ("testNSDateFormatter", testNSDateFormatter)
@@ -92,22 +94,22 @@ class DateTests: XCTestCase {
             let nsDate = NSDate()
             let date = Date(nsDate)
             
-            let formatted1 = formatter.stringFromDate(date)
-            let formatted2 = formatter.stringFromDate(nsDate)
+            let formatted1 = formatter.string(from: date)
+            let formatted2 = formatter.string(from: nsDate)
             
             XCTAssertEqual(formatted1, formatted2)
         }
         
         do {
             let dateStr = "2002-03-04 05:06:07"
-            let date: Date = formatter.dateFromString(dateStr)!
+            let date: Date = formatter.date(from: dateStr)!
             XCTAssertEqual(date.timeIntervalSince1970, Double(1015185967))
-            XCTAssertEqual(dateStr, formatter.stringFromDate(date))
+            XCTAssertEqual(dateStr, formatter.string(from: date))
         }
         
         do {
             let date = Date(since1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
-            let str = formatter.stringFromDate(date)
+            let str = formatter.string(from: date)
             XCTAssertEqual(str, "2016-03-16 17:33:12")
         }
         
@@ -125,14 +127,14 @@ class DateTests: XCTestCase {
         
         do {
             let dateStr = "2002-03-03 20:06:07"
-            let date: Date = formatter.dateFromString(dateStr)!
+            let date: Date = formatter.date(from: dateStr)!
             XCTAssertEqual(date.timeIntervalSince1970, Double(1015185967))
-            XCTAssertEqual(dateStr, formatter.stringFromDate(date))
+            XCTAssertEqual(dateStr, formatter.string(from: date))
         }
         
         do {
             let date = Date(since1970: 1458117192) // Wed Mar 16 2016 08:33:12 Z
-            let str = formatter.stringFromDate(date)
+            let str = formatter.string(from: date)
             XCTAssertEqual(str, "2016-03-16 08:33:12")
         }
     }

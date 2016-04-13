@@ -60,11 +60,11 @@ public final class DateFormatter {
 
 public extension DateFormatter {
     
-    func stringFromDate(date: Date) -> String {
+    func string(from date: Date) -> String {
         return CFDateFormatterCreateStringWithAbsoluteTime(nil, formatter, date.absoluteTime).swiftString
     }
     
-    func dateFromString(string: String) -> Date? {
+    func date(from string: String) -> Date? {
         var out: CFAbsoluteTime = 0
         if CFDateFormatterGetAbsoluteTimeFromString(formatter, CFString.from(string), nil, &out) {
             return Date(absoluteTime: out)

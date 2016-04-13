@@ -21,18 +21,18 @@ public extension Date {
     }
 }
 
-extension NSDate {
+extension NSDateFormatter {
     
 }
 
 public extension DateFormatter {
     
-    public func stringFromDate(date: NSDate) -> String {
-        return stringFromDate(Date(date))
+    public func string(from date: NSDate) -> String {
+        return string(from: Date(date))
     }
     
-    public func dateFromString(string: String) -> NSDate? {
-        guard let date: Date = dateFromString(string) else {
+    public func date(from string: String) -> NSDate? {
+        guard let date: Date = date(from: string) else {
             return nil
         }
         return date.nsDate
@@ -53,7 +53,7 @@ extension CFString {
         #endif
     }
     
-    static func from(swiftString: String) -> CFString {
+    static func from(_ swiftString: String) -> CFString {
         #if os(OSX)
             return swiftString as CFString
         #else
