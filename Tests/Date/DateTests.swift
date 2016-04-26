@@ -170,8 +170,6 @@ extension NSDateFormatter {
     func date(from string: String) -> NSDate? {
         return self.dateFromString(string)
     }
-    func string(from date: NSDate) -> String {
-        return self.stringFromDate(date)
-    }
 }
 #endif
+
