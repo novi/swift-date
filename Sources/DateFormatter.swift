@@ -42,7 +42,7 @@ public final class DateFormatter {
         #else
         formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
         #endif
-        timeZone = NSTimeZone.defaultTimeZone()
+        timeZone = NSTimeZone.default()
     }
     public var dateFormat: String? {
         didSet {
