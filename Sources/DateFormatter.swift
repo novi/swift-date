@@ -39,10 +39,11 @@ public final class DateFormatter {
     public init(locale: Locale, dateStyle: CFDateFormatterStyle = .noStyle, timeStyle: CFDateFormatterStyle = .noStyle) {
         #if os(OSX)
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle, timeStyle)
+            timeZone = NSTimeZone.default()
         #else
-        formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
+            formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
+            timeZone = NSTimeZone.defaultTimeZone()
         #endif
-        timeZone = NSTimeZone.default()
     }
     public var dateFormat: String? {
         didSet {
