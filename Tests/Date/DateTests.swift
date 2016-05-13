@@ -12,7 +12,7 @@ import Foundation
 import CoreFoundation
 
 extension DateTests {
-    static var allTests : [(String, DateTests -> () throws -> Void)] {
+    static var allTests : [(String, (DateTests) -> () throws -> Void)] {
         return [
                    ("testDate", testDate),
                    ("testComparing", testComparing),
@@ -48,7 +48,7 @@ class DateTests: XCTestCase {
         do {
             let abs1 = Date(absoluteTime: 0)
             let abs2 = CFDateCreate(nil, 0)
-            XCTAssertEqual(Date(abs2), abs1)
+            XCTAssertEqual(Date(abs2!), abs1)
         }
         
         do {

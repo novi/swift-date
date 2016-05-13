@@ -12,8 +12,7 @@ import CoreFoundation
 public final class Locale {
     public let locale: CFLocale
     public init?(identifier: String) {
-        let locale = CFLocaleCreate(nil, CFString.from(identifier))
-        if locale == nil {
+        guard let locale = CFLocaleCreate(nil, identifier.bridge()) else {
             return nil
         }
         self.locale = locale
@@ -48,7 +47,7 @@ public final class DateFormatter {
     public var dateFormat: String? {
         didSet {
             if let val = dateFormat {
-                CFDateFormatterSetFormat(formatter, CFString.from(val))
+                CFDateFormatterSetFormat(formatter, val.bridge())
             }
         }
     }
@@ -62,12 +61,12 @@ public final class DateFormatter {
 public extension DateFormatter {
     
     func string(from date: Date) -> String {
-        return CFDateFormatterCreateStringWithAbsoluteTime(nil, formatter, date.absoluteTime).swiftString
+        return CFDateFormatterCreateStringWithAbsoluteTime(nil, formatter, date.absoluteTime).bridge()
     }
     
     func date(from string: String) -> Date? {
         var out: CFAbsoluteTime = 0
-        if CFDateFormatterGetAbsoluteTimeFromString(formatter, CFString.from(string), nil, &out) {
+        if CFDateFormatterGetAbsoluteTimeFromString(formatter, string.bridge(), nil, &out) {
             return Date(absoluteTime: out)
         }
         return nil
