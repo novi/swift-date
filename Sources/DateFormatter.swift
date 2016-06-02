@@ -12,8 +12,7 @@ import CoreFoundation
 public final class Locale {
     public let locale: CFLocale
     public init?(identifier: String) {
-        let locale = CFLocaleCreate(nil, CFString.from(identifier))
-        if locale == nil {
+        guard let locale = CFLocaleCreate(nil, identifier.bridge()) else {
             return nil
         }
         self.locale = locale
@@ -25,32 +24,34 @@ public final class Locale {
     // https://github.com/apple/swift-corelibs-foundation/blob/master/CoreFoundation/Locale.subproj/CFDateFormatter.h#L36
     public enum CFDateFormatterStyle : Int {
         
-        case NoStyle = 0
-        case ShortStyle = 1
-        case MediumStyle = 2
-        case LongStyle = 3
-        case FullStyle = 4
+        case noStyle = 0
+        case shortStyle = 1
+        case mediumStyle = 2
+        case longStyle = 3
+        case fullStyle = 4
     }
 #endif
 
 
 public final class DateFormatter {
     public let formatter: CFDateFormatter
-    public init(locale: Locale, dateStyle: CFDateFormatterStyle = .NoStyle, timeStyle: CFDateFormatterStyle = .NoStyle) {
+    public init(locale: Locale, dateStyle: CFDateFormatterStyle = .noStyle, timeStyle: CFDateFormatterStyle = .noStyle) {
         #if os(OSX)
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle, timeStyle)
+            timeZone = NSTimeZone.default()
         #else
-        formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
+            formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
+            timeZone = NSTimeZone.defaultTimeZone()
         #endif
     }
     public var dateFormat: String? {
         didSet {
             if let val = dateFormat {
-                CFDateFormatterSetFormat(formatter, CFString.from(val))
+                CFDateFormatterSetFormat(formatter, val.bridge())
             }
         }
     }
-    public var timeZone: NSTimeZone = NSTimeZone.systemTimeZone() {
+    public var timeZone: NSTimeZone {
         didSet {
             CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, timeZone)
         }
@@ -59,13 +60,13 @@ public final class DateFormatter {
 
 public extension DateFormatter {
     
-    func stringFromDate(date: Date) -> String {
-        return CFDateFormatterCreateStringWithAbsoluteTime(nil, formatter, date.absoluteTime).swiftString
+    func string(from date: Date) -> String {
+        return CFDateFormatterCreateStringWithAbsoluteTime(nil, formatter, date.absoluteTime).bridge()
     }
     
-    func dateFromString(string: String) -> Date? {
+    func date(from string: String) -> Date? {
         var out: CFAbsoluteTime = 0
-        if CFDateFormatterGetAbsoluteTimeFromString(formatter, CFString.from(string), nil, &out) {
+        if CFDateFormatterGetAbsoluteTimeFromString(formatter, string.bridge(), nil, &out) {
             return Date(absoluteTime: out)
         }
         return nil

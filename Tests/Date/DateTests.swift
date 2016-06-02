@@ -11,17 +11,12 @@ import XCTest
 import Foundation
 import CoreFoundation
 
-#if os(OSX)
-    protocol XCTestCaseProvider {
-        var allTests: [(String, () throws -> Void)] { get }
-    }
-    
-#endif
-
 extension DateTests {
-    static var allTests : [(String, DateTests -> () throws -> Void)] {
+    static var allTests : [(String, (DateTests) -> () throws -> Void)] {
         return [
                    ("testDate", testDate),
+                   ("testComparing", testComparing),
+                   ("testOperation", testOperation),
                    ("testJSTDateFormatter", testJSTDateFormatter),
                    ("testUTCDateFormatter", testUTCDateFormatter),
                    ("testNSDateFormatter", testNSDateFormatter)
@@ -29,11 +24,7 @@ extension DateTests {
     }
 }
 
-class DateTests: XCTestCase, XCTestCaseProvider {
-    
-    var allTests: [(String, () throws -> Void)] {
-        return self.dynamicType.allTests.map{ ($0.0, $0.1(self)) }
-    }
+class DateTests: XCTestCase {
     
     func testDate() {
         do {
@@ -57,7 +48,7 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         do {
             let abs1 = Date(absoluteTime: 0)
             let abs2 = CFDateCreate(nil, 0)
-            XCTAssertEqual(Date(abs2), abs1)
+            XCTAssertEqual(Date(abs2!), abs1)
         }
         
         do {
@@ -103,22 +94,22 @@ class DateTests: XCTestCase, XCTestCaseProvider {
             let nsDate = NSDate()
             let date = Date(nsDate)
             
-            let formatted1 = formatter.stringFromDate(date)
-            let formatted2 = formatter.stringFromDate(nsDate)
+            let formatted1 = formatter.string(from: date)
+            let formatted2 = formatter.string(from: nsDate)
             
             XCTAssertEqual(formatted1, formatted2)
         }
         
         do {
             let dateStr = "2002-03-04 05:06:07"
-            let date: Date = formatter.dateFromString(dateStr)!
+            let date: Date = formatter.date(from: dateStr)!
             XCTAssertEqual(date.timeIntervalSince1970, Double(1015185967))
-            XCTAssertEqual(dateStr, formatter.stringFromDate(date))
+            XCTAssertEqual(dateStr, formatter.string(from: date))
         }
         
         do {
             let date = Date(since1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
-            let str = formatter.stringFromDate(date)
+            let str = formatter.string(from: date)
             XCTAssertEqual(str, "2016-03-16 17:33:12")
         }
         
@@ -136,14 +127,14 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         
         do {
             let dateStr = "2002-03-03 20:06:07"
-            let date: Date = formatter.dateFromString(dateStr)!
+            let date: Date = formatter.date(from: dateStr)!
             XCTAssertEqual(date.timeIntervalSince1970, Double(1015185967))
-            XCTAssertEqual(dateStr, formatter.stringFromDate(date))
+            XCTAssertEqual(dateStr, formatter.string(from: date))
         }
         
         do {
             let date = Date(since1970: 1458117192) // Wed Mar 16 2016 08:33:12 Z
-            let str = formatter.stringFromDate(date)
+            let str = formatter.string(from: date)
             XCTAssertEqual(str, "2016-03-16 08:33:12")
         }
     }
@@ -159,9 +150,9 @@ class DateTests: XCTestCase, XCTestCaseProvider {
         XCTAssertNotNil(formatter.locale)
         
         let dateString = "2001-02-03 04:05:06"
-        let date = formatter.dateFromString(dateString)!
+        let date = formatter.date(from: dateString)!
         print(date)
-        XCTAssertEqual(formatter.stringFromDate(date), dateString)
+        XCTAssertEqual(formatter.string(from: date), dateString)
         
         /*do {
             // will fail for now
@@ -172,3 +163,13 @@ class DateTests: XCTestCase, XCTestCaseProvider {
     }
     
 }
+
+#if os(OSX)
+#else
+extension NSDateFormatter {
+    func date(from string: String) -> NSDate? {
+        return self.dateFromString(string)
+    }
+}
+#endif
+

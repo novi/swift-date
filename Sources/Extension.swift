@@ -21,18 +21,18 @@ public extension Date {
     }
 }
 
-extension NSDate {
+extension NSDateFormatter {
     
 }
 
 public extension DateFormatter {
     
-    public func stringFromDate(date: NSDate) -> String {
-        return stringFromDate(Date(date))
+    public func string(from date: NSDate) -> String {
+        return string(from: Date(date))
     }
     
-    public func dateFromString(string: String) -> NSDate? {
-        guard let date: Date = dateFromString(string) else {
+    public func date(from string: String) -> NSDate? {
+        guard let date: Date = date(from: string) else {
             return nil
         }
         return date.nsDate
@@ -41,25 +41,24 @@ public extension DateFormatter {
 
 extension CFString {
     
-    var swiftString: String {
+    func bridge() -> String {
         #if os(OSX)
-        return self as String
+            return self as String
         #else
-        let ptr = CFStringGetCStringPtr(self, UInt32(kCFStringEncodingUTF8))
-            guard let str = String.fromCString(ptr) else {
-                fatalError("CFString to String conversion failed, \(self)")
-            }
-            return str
-        #endif
-    }
-    
-    static func from(swiftString: String) -> CFString {
-        #if os(OSX)
-            return swiftString as CFString
-        #else
-            return swiftString.withCString { bytes in
-                return CFStringCreateWithCString(nil, bytes, UInt32(kCFStringEncodingUTF8))
-            }
+            let str = unsafeBitCast(self, to: NSString.self)
+            return str.bridge()
         #endif
     }
 }
+
+extension String {
+    func bridge() -> CFString {
+        #if os(OSX)
+            return self as CFString
+        #else
+            let str: NSString = self.bridge()
+            return unsafeBitCast(str, to: CFString.self)
+        #endif
+    }
+}
+
