@@ -1,7 +1,9 @@
 import XCTest
 
-@testable import DateTestSuite
+import DateTestSuite
 
-XCTMain([
-            testCase(DateTests.allTests)
-    ])
+var tests = [XCTestCaseEntry]()
+
+tests += DateTestSuite.allTests()
+
+XCTMain(tests)

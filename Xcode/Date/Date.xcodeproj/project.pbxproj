@@ -10,7 +10,6 @@
 		52EB7C741C994655009B4F55 /* Date.h in Headers */ = {isa = PBXBuildFile; fileRef = 52EB7C731C994655009B4F55 /* Date.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		52EB7C7B1C994655009B4F55 /* Date.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EB7C701C994655009B4F55 /* Date.framework */; };
 		52EB7C921C99469F009B4F55 /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EB7C911C99469F009B4F55 /* DateTests.swift */; };
-		52EB7C941C9946A5009B4F55 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EB7C931C9946A5009B4F55 /* Date.swift */; };
 		52EB7C961C9946B1009B4F55 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EB7C951C9946B1009B4F55 /* Extension.swift */; };
 		52EB7CB51C9956C1009B4F55 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EB7CB41C9956C1009B4F55 /* DateFormatter.swift */; };
 /* End PBXBuildFile section */
@@ -32,7 +31,6 @@
 		52EB7C7A1C994655009B4F55 /* DateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52EB7C811C994655009B4F55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52EB7C911C99469F009B4F55 /* DateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
-		52EB7C931C9946A5009B4F55 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		52EB7C951C9946B1009B4F55 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		52EB7CB31C9950E5009B4F55 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = ../../../Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		52EB7CB41C9956C1009B4F55 /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 		52EB7C8A1C99466E009B4F55 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				52EB7C931C9946A5009B4F55 /* Date.swift */,
 				52EB7CB41C9956C1009B4F55 /* DateFormatter.swift */,
 				52EB7C951C9946B1009B4F55 /* Extension.swift */,
 			);
@@ -224,7 +221,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				52EB7CB51C9956C1009B4F55 /* DateFormatter.swift in Sources */,
-				52EB7C941C9946A5009B4F55 /* Date.swift in Sources */,
 				52EB7C961C9946B1009B4F55 /* Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
