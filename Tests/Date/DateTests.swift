@@ -30,7 +30,7 @@ extension DateAllTests {
     }
 #endif
 
-#if !os(OSX)
+#if SWIFT3_DEV
     public typealias Date = NSDate
     public typealias Locale = NSLocale
     public typealias TimeZone = NSTimeZone
@@ -136,8 +136,7 @@ class DateAllTests: XCTestCase {
     
 }
 
-#if os(OSX)
-#else
+#if !os(OSX)
 extension NSDateFormatter {
     func date(from string: String) -> NSDate? {
         return self.dateFromString(string)

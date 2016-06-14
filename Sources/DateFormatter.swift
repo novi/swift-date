@@ -12,7 +12,7 @@ import Foundation
 public final class LocaleCF {
     public let locale: CFLocale
     public init?(identifier: String) {
-        #if os(OSX)
+        #if !SWIFT3_DEV
         guard let locale = CFLocaleCreate(nil, CFLocaleIdentifier(rawValue: identifier.bridge())) else {
             return nil
         }
@@ -26,9 +26,12 @@ public final class LocaleCF {
     }
 }
 
-#if !os(OSX)
+#if SWIFT3_DEV
     public typealias Date = NSDate
     public typealias TimeZone = NSTimeZone
+#endif
+
+#if !os(OSX)
     
     // https://github.com/apple/swift-corelibs-foundation/blob/master/CoreFoundation/Locale.subproj/CFDateFormatter.h#L36
     public enum CFDateFormatterStyle : Int {
@@ -62,7 +65,7 @@ public final class DateFormatterCF {
     }
     public var timeZone: TimeZone {
         didSet {
-            #if os(OSX)
+            #if !SWIFT3_DEV
             CFDateFormatterSetProperty(formatter, CFDateFormatterKey.timeZone.rawValue, timeZone)
             #else
             CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, timeZone)
