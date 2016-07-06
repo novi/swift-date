@@ -50,7 +50,11 @@ public final class DateFormatterCF {
     public init(locale: LocaleCF, dateStyle: CFDateFormatterStyle = .noStyle, timeStyle: CFDateFormatterStyle = .noStyle) {
         #if os(OSX)
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle, timeStyle)
-            timeZone = TimeZone.default
+            #if SWIFT3_DEV
+                timeZone = TimeZone.default()
+            #else
+                timeZone = TimeZone.default
+            #endif
         #else
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
             timeZone = TimeZone.defaultTimeZone()
