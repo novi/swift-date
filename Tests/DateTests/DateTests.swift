@@ -14,7 +14,7 @@ import CoreFoundation
 extension DateAllTests {
     static var allTests : [(String, (DateAllTests) -> () throws -> Void)] {
         return [
-                   ("testDate", testDate),
+                   //("testDate", testDate),
                    ("testJSTDateFormatter", testJSTDateFormatter),
                    ("testUTCDateFormatter", testUTCDateFormatter),
                    ("testNSDateFormatter", testNSDateFormatter)
@@ -22,7 +22,7 @@ extension DateAllTests {
     }
 }
 
-#if !os(OSX)
+#if !os(macOS)
     public func allTests() -> [XCTestCaseEntry] {
         return [
             testCase( DateAllTests.allTests ),
@@ -30,16 +30,10 @@ extension DateAllTests {
     }
 #endif
 
-#if SWIFT3_DEV
-    public typealias Date = NSDate
-    public typealias Locale = NSLocale
-    public typealias TimeZone = NSTimeZone
-    public typealias DateFormatter = NSDateFormatter
-#endif
-
 
 class DateAllTests: XCTestCase {
     
+    #if os(macOS)
     func testDate() {
         do {
             let now1 = Date()
@@ -59,12 +53,13 @@ class DateAllTests: XCTestCase {
             XCTAssertEqual(now1.description, now3.description)
         }
     }
+    #endif
     
     
     
     func testJSTDateFormatter() {
         
-        guard let locale = LocaleCF(identifier: "en_US_POSIX"), let tz = TimeZone(name: "JST") else {
+        guard let locale = LocaleCF(identifier: "en_US_POSIX"), let tz = TimeZone(abbreviation: "JST") else {
             fatalError()
         }
         
@@ -90,7 +85,7 @@ class DateAllTests: XCTestCase {
     
     func testUTCDateFormatter() {
         
-        guard let locale = LocaleCF(identifier: "en_US_POSIX"), let tz = TimeZone(name: "UTC") else {
+        guard let locale = LocaleCF(identifier: "en_US_POSIX"), let tz = TimeZone(abbreviation: "UTC") else {
             fatalError()
         }
         
@@ -114,8 +109,13 @@ class DateAllTests: XCTestCase {
     
     func testNSDateFormatter() {
         let formatter = DateFormatter()
+        #if os(macOS)
+        formatter.locale = Locale(identifier: "en_US")
+        #else
         formatter.locale = Locale(localeIdentifier: "en_US")
-        formatter.timeZone = TimeZone(name: "JST")
+        #endif
+        
+        formatter.timeZone = TimeZone(abbreviation: "JST")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         XCTAssertNotNil(formatter.timeZone)
@@ -128,6 +128,7 @@ class DateAllTests: XCTestCase {
         
         do {
             // will fail for now
+            // 2016/08/09; it seems to be fixed.
             let date = Date(timeIntervalSince1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
             let str = formatter.string(from: date)
             XCTAssertEqual(str, "2016-03-16 17:33:12")
@@ -135,12 +136,4 @@ class DateAllTests: XCTestCase {
     }
     
 }
-
-#if !os(OSX)
-extension NSDateFormatter {
-    func date(from string: String) -> NSDate? {
-        return self.dateFromString(string)
-    }
-}
-#endif
 

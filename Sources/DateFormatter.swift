@@ -12,7 +12,7 @@ import Foundation
 public final class LocaleCF {
     public let locale: CFLocale
     public init?(identifier: String) {
-        #if !SWIFT3_DEV
+        #if os(macOS)
         guard let locale = CFLocaleCreate(nil, CFLocaleIdentifier(rawValue: identifier.bridge())) else {
             return nil
         }
@@ -26,12 +26,7 @@ public final class LocaleCF {
     }
 }
 
-#if SWIFT3_DEV
-    public typealias Date = NSDate
-    public typealias TimeZone = NSTimeZone
-#endif
-
-#if !os(OSX)
+#if os(Linux)
     
     // https://github.com/apple/swift-corelibs-foundation/blob/master/CoreFoundation/Locale.subproj/CFDateFormatter.h#L36
     public enum CFDateFormatterStyle : Int {
@@ -48,17 +43,14 @@ public final class LocaleCF {
 public final class DateFormatterCF {
     public let formatter: CFDateFormatter
     public init(locale: LocaleCF, dateStyle: CFDateFormatterStyle = .noStyle, timeStyle: CFDateFormatterStyle = .noStyle) {
-        #if os(OSX)
+        #if os(macOS)
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle, timeStyle)
-            #if SWIFT3_DEV
-                timeZone = TimeZone.default()
-            #else
-                timeZone = TimeZone.default
-            #endif
+            self.timeZone = TimeZone(secondsFromGMT: 0)!
         #else
             formatter = CFDateFormatterCreate(nil, locale.locale, dateStyle.rawValue, timeStyle.rawValue)
-            timeZone = TimeZone.defaultTimeZone()
+            self.timeZone = TimeZone(abbreviation: "UTC")!
         #endif
+        
     }
     public var dateFormat: String? {
         didSet {
@@ -69,8 +61,8 @@ public final class DateFormatterCF {
     }
     public var timeZone: TimeZone {
         didSet {
-            #if !SWIFT3_DEV
-            CFDateFormatterSetProperty(formatter, CFDateFormatterKey.timeZone.rawValue, timeZone)
+            #if os(macOS)
+            CFDateFormatterSetProperty(formatter, CFDateFormatterKey.timeZone.rawValue, timeZone as NSTimeZone)
             #else
             CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, timeZone)
             #endif

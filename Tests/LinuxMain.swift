@@ -1,9 +1,9 @@
 import XCTest
 
-import DateTestSuite
+import DateTests
 
 var tests = [XCTestCaseEntry]()
 
-tests += DateTestSuite.allTests()
+tests += DateTests.allTests()
 
 XCTMain(tests)
