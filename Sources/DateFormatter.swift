@@ -64,7 +64,7 @@ public final class DateFormatterCF {
             #if os(macOS)
             CFDateFormatterSetProperty(formatter, CFDateFormatterKey.timeZone.rawValue, timeZone as NSTimeZone)
             #else
-            CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, timeZone)
+            CFDateFormatterSetProperty(formatter, kCFDateFormatterTimeZone, unsafeBitCast(timeZone._bridgeToObjectiveC(), to: CFTimeZone.self))
             #endif
         }
     }

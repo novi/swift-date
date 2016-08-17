@@ -109,11 +109,7 @@ class DateAllTests: XCTestCase {
     
     func testNSDateFormatter() {
         let formatter = DateFormatter()
-        #if os(macOS)
         formatter.locale = Locale(identifier: "en_US")
-        #else
-        formatter.locale = Locale(localeIdentifier: "en_US")
-        #endif
         
         formatter.timeZone = TimeZone(abbreviation: "JST")
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
