@@ -123,7 +123,6 @@ class DateAllTests: XCTestCase {
         XCTAssertEqual(formatter.string(from: date), dateString)
         
         do {
-            // will fail for now
             // 2016/08/09; it seems to be fixed.
             let date = Date(timeIntervalSince1970: 1458117192) // Wed Mar 16 2016 17:33:12 GMT+0900 (JST)
             let str = formatter.string(from: date)
