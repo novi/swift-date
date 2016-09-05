@@ -14,28 +14,7 @@ public extension Date {
         return NSDate(timeIntervalSince1970: timeIntervalSince1970)
     }
     var cfDate: CFDate {
-        return CFDateCreate(nil, self.absoluteTime)
-    }
-    var absoluteTime: CFAbsoluteTime {
-        return timeIntervalSince1970 - kCFAbsoluteTimeIntervalSince1970
-    }
-}
-
-extension NSDateFormatter {
-    
-}
-
-public extension DateFormatter {
-    
-    public func string(from date: NSDate) -> String {
-        return string(from: Date(date))
-    }
-    
-    public func date(from string: String) -> NSDate? {
-        guard let date: Date = date(from: string) else {
-            return nil
-        }
-        return date.nsDate
+        return CFDateCreate(nil, self.timeIntervalSinceReferenceDate)
     }
 }
 
